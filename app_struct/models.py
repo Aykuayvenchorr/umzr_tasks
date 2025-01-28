@@ -67,6 +67,7 @@ class Division(models.Model):
         return f'{self.abbr} ({self.company.title})'
 
 
+# Модель сотрудника
 class Employee(models.Model):
     """Модель сотрудника предприятия"""
     user        = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL, help_text="Пользователь системы", verbose_name='Пользователь')
@@ -97,6 +98,62 @@ class Employee(models.Model):
         return f'{self.surname} {self.name} {self.patronymic} ({self.post} {self.company.title})'
 
 
+# Модель лицензии
+class LicenseActualManager(models.Manager):
+    """Менеджер актуальных лицензий - только актуальные лицензии"""
+    def get_queryset(self):
+        return super().get_queryset().filter(actual=True)   
+class License(models.Model):
+    """Лицензионные участки"""
+    name        = models.CharField(max_length=250, unique=True, help_text="Наименование", verbose_name="Наименование")
+    owner       = models.ForeignKey(Company, on_delete=models.SET_NULL, blank=True, null=True, related_name="licenses", help_text="Владелец", verbose_name="Владелец")
+    dt_start    = models.DateField(help_text="Начало", verbose_name='Начало')
+    dt_end      = models.DateField(help_text="Окончание", verbose_name='Окончание')
+    doc         = models.FileField(blank=True, null=True, upload_to="doc/license/", help_text="Файл лицензии", verbose_name="Лицензия")
+    note        = models.TextField(blank=True, null=True, help_text="Примечание", verbose_name="Примечание")
+    actual      = models.BooleanField(default=True, help_text="Актуально", verbose_name="Актуально")
+    created_at  = models.DateTimeField(auto_now_add=True, help_text="Создан", verbose_name='Создан')
+    updated_at  = models.DateTimeField(auto_now=True, help_text="Обновлен", verbose_name='Обновлен')
+    gis         = models.CharField(max_length=255, blank=True, null=True, help_text="GIS ID", verbose_name="GIS ID")
+
+    objects     = models.Manager()
+    actuals     = LicenseActualManager()
+
+    class Meta:
+        verbose_name = "Лицензия"
+        verbose_name_plural = "Лицензии"
+        ordering = ["owner", "name"]
+        indexes = [models.Index(fields=['name']), ]
+
+    def __str__(self):
+        return f'{self.name}'
+
+
+# Модель объекта 
+class Facility(models.Model):
+    """Объекты месторождения"""
+    name        = models.CharField(max_length=255, help_text="Наименование", verbose_name="Наименование")
+    license     = models.ManyToManyField(License, related_name="facilities", help_text="Лицензии", verbose_name="Лицензии")
+    parent      = models.ForeignKey('Facility', on_delete=models.CASCADE, blank=True, null=True, related_name="facilities", help_text="Основной объект", verbose_name="Основной объект")
+    count       = models.FloatField(blank=True, null=True, help_text="Количество", verbose_name="Количество")
+    length      = models.FloatField(blank=True, null=True, help_text="Протяженность", verbose_name="Протяженность")
+    square      = models.FloatField(blank=True, null=True, help_text="Площадь", verbose_name="Площадь")
+    note        = models.TextField(blank=True, null=True, help_text="Примечание", verbose_name="Примечание")
+    actual      = models.BooleanField(default=True, help_text="Актуально", verbose_name="Актуально")
+    created_at  = models.DateTimeField(auto_now_add=True, help_text="Создан", verbose_name='Создан')
+    updated_at  = models.DateTimeField(auto_now=True, help_text="Обновлен", verbose_name='Обновлен')
+    gis         = models.CharField(blank=True, null=True, help_text="GIS ID", verbose_name="GIS ID")
+    gist        = models.CharField(blank=True, null=True, help_text="Таблица в GIS", verbose_name="Таблица в GIS")
+
+    class Meta:
+        verbose_name = "Объект"
+        verbose_name_plural = "Объекты"
+        ordering = ["name"]
+        indexes = [models.Index(fields=['name']), ]
+        unique_together = ('parent', 'name')
+
+    def __str__(self):
+        return f'{self.name} ({self.license.name})'
 
 
 # # Модель проекта    
@@ -120,79 +177,3 @@ class Employee(models.Model):
 
 #     def __str__(self):
 #         return f'{self.name} ({self.division.name} - {self.division.company.title})'
-    
-
-# # Модель лицензии    
-# class License(models.Model):
-#     """Лицензии проекта"""
-#     name       = models.CharField(max_length=250, unique=True, help_text="Наименование", verbose_name="Наименование")
-#     owner      = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="related_license_owner", help_text="Владелец", verbose_name="Владелец")
-#     date_start = models.DateField(help_text="Начало", verbose_name='Начало')
-#     date_end   = models.DateField(help_text="Окончание", verbose_name='Окончание')
-#     doc        = models.FileField(blank=True, null=True, upload_to="doc/license/", help_text="Лицензия", verbose_name="Лицензия")
-#     note       = models.TextField(blank=True, null=True, help_text="Примечание", verbose_name="Примечание")
-#     actual     = models.BooleanField(default=True, help_text="Актуально", verbose_name="Актуально")
-#     created_at = models.DateTimeField(auto_now_add=True, help_text="Создан", verbose_name='Создан')
-#     updated_at = models.DateTimeField(auto_now=True, help_text="Обновлен", verbose_name='Обновлен')
-#     gis        = models.TextField(blank=True, null=True, help_text="GIS ID", verbose_name="GIS ID")
-
-#     class Meta:
-#         verbose_name = "Лицензия"
-#         verbose_name_plural = "Лицензии"
-#         ordering = ["owner", "name"]
-#         indexes = [models.Index(fields=['name']), ]
-
-#     def __str__(self):
-#         return f'{self.name}'
-
-
-# # Модель месторождения   
-# class Field(models.Model):
-#     """Месторождения лицензии"""
-#     license    = models.ForeignKey(License, on_delete=models.CASCADE, related_name="related_fields_license", help_text="Лицензия", verbose_name="Лицензия")
-#     name       = models.CharField(max_length=250, help_text="Наименование", verbose_name="Наименование")
-#     note       = models.TextField(blank=True, null=True, help_text="Примечание", verbose_name="Примечание")
-#     actual     = models.BooleanField(default=True, help_text="Актуально", verbose_name="Актуально")
-#     created_at = models.DateTimeField(auto_now_add=True, help_text="Создан", verbose_name='Создан')
-#     updated_at = models.DateTimeField(auto_now=True, help_text="Обновлен", verbose_name='Обновлен')
-#     gis        = models.TextField(blank=True, null=True, help_text="GIS ID", verbose_name="GIS ID")
-
-#     class Meta:
-#         verbose_name = "Месторождение"
-#         verbose_name_plural = "Месторождения"
-#         ordering = ["license", "name"]
-#         indexes = [models.Index(fields=['name']), ]
-#         unique_together = ('license', 'name')
-
-#     def __str__(self):
-#         return f'{self.name} ({self.license.name})'
-
-
-# # Модель объекта 
-# class Facility(models.Model):
-#     """Объекты месторождения"""
-#     name       = models.CharField(max_length=250, help_text="Наименование", verbose_name="Наименование")
-#     field      = models.ForeignKey('Field', on_delete=models.CASCADE, related_name="related_facilities", help_text="Месторождение", verbose_name="Месторождение")
-#     parent     = models.ForeignKey('Facility', on_delete=models.CASCADE, blank=True, null=True, related_name="related_subsidiaries", help_text="Основной объект", verbose_name="Основной объект")
-#     count      = models.FloatField(blank=True, null=True, help_text="Количество", verbose_name="Количество")
-#     length     = models.FloatField(blank=True, null=True, help_text="Протяженность", verbose_name="Протяженность")
-#     square     = models.FloatField(blank=True, null=True, help_text="Площадь", verbose_name="Площадь")
-#     note       = models.TextField(blank=True, null=True, help_text="Примечание", verbose_name="Примечание")
-#     actual     = models.BooleanField(default=True, help_text="Актуально", verbose_name="Актуально")
-#     created_at = models.DateTimeField(auto_now_add=True, help_text="Создан", verbose_name='Создан')
-#     updated_at = models.DateTimeField(auto_now=True, help_text="Обновлен", verbose_name='Обновлен')
-#     gis        = models.TextField(blank=True, null=True, help_text="GIS ID", verbose_name="GIS ID")
-#     gist       = models.TextField(blank=True, null=True, help_text="Таблица в GIS", verbose_name="Таблица в GIS")
-
-#     class Meta:
-#         verbose_name = "Объект"
-#         verbose_name_plural = "Объекты"
-#         ordering = ["field", "name"]
-#         indexes = [models.Index(fields=['name']), ]
-#         unique_together = ('field', 'parent', 'name')
-
-#     def __str__(self):
-#         return f'{self.name} ({self.field.name})'
-
-
-    
