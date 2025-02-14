@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="data:;base64,=">
+    <!-- <link rel="stylesheet" href="{% static 'umzr/css/reset.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'umzr/css/style.css' %}">
+    <script src="{% static 'bootstrap/js/popper.min.js' %}" defer></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}" defer></script>
+
+    <title>{% block title %}УМЗР{% endblock title %}</title>
+</head>
+<body class="bg-gray">    
+    <div class="container">
+        <div class="card text-white bg-dark position-absolute top-50 start-50 translate-middle" style="width: 27rem;">
+            <div class="card-header">Авторизация</div>
+            <form action="{% url 'signin' %}" method="POST" class="card-body">
+                {% csrf_token %}
+                <div class="mt-1">
+                    <label for="{{ form.username.id_for_label }}" class="form-label">Имя пользователя:</label>
+                    <input type="text" class="form-control" id="{{ form.username.id_for_label }}" aria-describedby="usernameHelp" placeholder="Имя пользователя" name="username" required>
+                    <div id="usernameHelp" class="form-text">Укажите имя пользователя</div>
+                </div>
+                <div>
+                    <label for="{{ form.password.id_for_label }}" class="form-label">Пароль:</label>
+                    <input type="password" class="form-control" id="{{ form.password.id_for_label }}" aria-describedby="passwordHelp" placeholder="Имя пользователя" name="password" required>
+                    <div id="passwordHelp" class="form-text">Укажите пароль</div>
+                </div>                    
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button type="submit" class="btn btn-success">Авторизация</button>
+                </div>
+            </form>
+        </div>        
+    </div>
+</body>
+</html>

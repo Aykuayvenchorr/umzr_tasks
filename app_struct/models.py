@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 # Create your models here.
 
@@ -129,12 +130,38 @@ class License(models.Model):
         return f'{self.name}'
 
 
-# Модель объекта 
+# Модель объекта
+class FacilityMainManager(models.Manager):
+    """Менеджер объектов - только верхнеуровневые объекты"""
+    def get_queryset(self):
+        return super().get_queryset().filter(parent__isnull=True)
+class FacilityActualManager(models.Manager):
+    """Менеджер объектов - только актуальные объекты"""
+    def get_queryset(self):
+        return super().get_queryset().filter(actual=True)
+class FacilityMainActualManager(models.Manager):
+    """Менеджер объектов - только верхнеуровневые и актуальные объекты"""
+    def get_queryset(self):
+        return super().get_queryset().filter(Q(parent__isnull=True) & Q(actual=True))
+class FacilityType(models.Model):
+    """Типы объектов"""
+    name = models.CharField(max_length=255, help_text="Тип объекта", verbose_name="Тип объекта", unique=True)
+
+    class Meta:
+        verbose_name = "Тип объекта"
+        verbose_name_plural = "Типы объектов"
+        ordering = ['name', ]
+
+    def __str__(self):
+        return f'{self.name}'
+    
+    
 class Facility(models.Model):
     """Объекты месторождения"""
     name        = models.CharField(max_length=255, help_text="Наименование", verbose_name="Наименование")
-    license     = models.ManyToManyField(License, related_name="facilities", help_text="Лицензии", verbose_name="Лицензии")
-    parent      = models.ForeignKey('Facility', on_delete=models.CASCADE, blank=True, null=True, related_name="facilities", help_text="Основной объект", verbose_name="Основной объект")
+    license     = models.ForeignKey('License', on_delete=models.SET_NULL, blank=True, null=True, related_name="facilities", help_text="Лицензия", verbose_name="Лицензия")
+    parent      = models.ForeignKey('Facility', on_delete=models.SET_NULL, blank=True, null=True, related_name="facilities", help_text="Основной объект", verbose_name="Основной объект")
+    type        = models.ForeignKey('FacilityType', on_delete=models.SET_NULL, blank=True, null=True, related_name="facilities", help_text="Тип объекта", verbose_name="Тип объекта")
     count       = models.FloatField(blank=True, null=True, help_text="Количество", verbose_name="Количество")
     length      = models.FloatField(blank=True, null=True, help_text="Протяженность", verbose_name="Протяженность")
     square      = models.FloatField(blank=True, null=True, help_text="Площадь", verbose_name="Площадь")
@@ -148,32 +175,10 @@ class Facility(models.Model):
     class Meta:
         verbose_name = "Объект"
         verbose_name_plural = "Объекты"
-        ordering = ["name"]
+        ordering = ['license', 'name']
         indexes = [models.Index(fields=['name']), ]
-        unique_together = ('parent', 'name')
+        unique_together = ('license', 'parent', 'name')
 
     def __str__(self):
         return f'{self.name} ({self.license.name})'
 
-
-# # Модель проекта    
-# class Project(models.Model):
-#     """Проекты подразделения"""
-#     division    = models.ForeignKey('Division', on_delete=models.CASCADE, related_name="related_projects_division", help_text="Подразделение", verbose_name="Подразделение")
-#     name        = models.CharField(max_length=250, help_text="Наименование", verbose_name="Наименование")
-#     licenses    = models.ManyToManyField('License', related_name="related_projects_license", help_text="Лицензии", verbose_name="Лицензии")
-#     contacts    = models.TextField(blank=True, null=True, help_text="Контакты", verbose_name="Контакты")
-#     note        = models.TextField(blank=True, null=True, help_text="Примечание", verbose_name="Примечание")
-#     actual      = models.BooleanField(default=True, help_text="Актуально", verbose_name="Актуально")
-#     created_at  = models.DateTimeField(auto_now_add=True, help_text="Создан", verbose_name='Создан')
-#     updated_at  = models.DateTimeField(auto_now=True, help_text="Обновлен", verbose_name='Обновлен')
-
-#     class Meta:
-#         verbose_name = "Проект"
-#         verbose_name_plural = "Проекты"
-#         ordering = ["division", "name"]
-#         indexes = [models.Index(fields=["division", "name"]),]
-#         unique_together = ('division', 'name')
-
-#     def __str__(self):
-#         return f'{self.name} ({self.division.name} - {self.division.company.title})'
