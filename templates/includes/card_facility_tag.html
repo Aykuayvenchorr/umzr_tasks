@@ -1,0 +1,20 @@
+{% load static %}
+{% load menu_tags %}
+
+<div class="col">
+    <div class="card text-white bg-dark h-100" style="max-width: 21rem;">
+        <div class="card-header"><a class="nav-link" href="/struct/company/{{ company.id }}/license/{{ license.id }}/facility/{{ facility.id }}/">{{ facility.name }}</a></div>                        
+        <div class="card-body">
+            <h5 class="card-title">{{ facility.name }}</h5>
+            <ul class="list-group bg-dark list-group-flush">
+                <li class="list-group-item text-white bg-dark">
+                    {% if facility.facilities.count > 0 %}
+                    <a href="/struct/company/{{ company.id }}/license/{{ license.id }}/subfacilities/{{ facility.id }}/" class="nav-link">Подобъекты</a>
+                    {% else %}
+                    <span>Нет подобъектов</span>
+                    {% endif %}
+                </li>
+            </ul>                            
+        </div>
+    </div>
+</div>

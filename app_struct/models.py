@@ -153,9 +153,7 @@ class FacilityType(models.Model):
         ordering = ['name', ]
 
     def __str__(self):
-        return f'{self.name}'
-    
-    
+        return f'{self.name}'    
 class Facility(models.Model):
     """Объекты месторождения"""
     name        = models.CharField(max_length=255, help_text="Наименование", verbose_name="Наименование")

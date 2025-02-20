@@ -17,10 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import app_struct.views
+from django.conf import settings
+from .settings import *
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('signout/', app_struct.views.signout, name='signout'),
     path('signin/', app_struct.views.signin, name='signin'),
     path('', app_struct.views.index, name='index'),
+    path("struct/", include("app_struct.urls")),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

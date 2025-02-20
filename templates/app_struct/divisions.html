@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% load menu_tags %}
+
+{% block title %}Подразделения {{ company.title }}{% endblock title %}
+
+{% block main %}
+<div class="card text-white bg-dark">
+    <div class="card-header"><a class="nav-link" href="/struct/company/{{ company.id }}/">Краткое наименование: {{ company.title }}</br>Полное наименование: {{ company.name }}</a></div>
+    <div class="img_wrapper">
+        {% if company.logo %}
+        <img src="{{ company.logo.url }}" class="card-img-top" alt="Логотип компании">
+        {% else %}
+        <img src="{% static 'umzr/img/company.svg' %}" class="card-img-top" alt="Заглушка">
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title text-white bg-dark">Подразделения Общества:</h5>
+    </div>
+</div>
+
+<div class="row row-cols-3 row-cols-md-3 g-4 mt-2">
+{% get_divisions company.id as divisions %}
+{% for division in divisions %}
+    {% card_division_tag company.id division.id %}
+{% endfor %}
+</div>
+{% endblock main %}

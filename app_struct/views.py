@@ -31,3 +31,79 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('index')
+
+
+def companies(request):
+    return render(request, 'app_struct/companies.html')
+
+def subcompanies(request, id):
+    company = Company.objects.get(id=id)
+    subcompanies = company.subcompany.filter(actual=True).order_by('title')
+    context = {
+        'company': company,
+        'subcompanies': subcompanies,
+    }
+    return render(request, 'app_struct/subcompanies.html', context=context)
+
+def divisions(request, id):
+    company = Company.objects.get(id=id)    
+    context = {
+        'company': company,        
+    }
+    return render(request, 'app_struct/divisions.html', context=context)
+
+def subdivisions(request, id, id_div):
+    company = Company.objects.get(id=id)
+    division = Division.objects.get(id=id_div)
+    context = {
+        'company': company,
+        'division': division,
+    }
+    return render(request, 'app_struct/subdivisions.html', context=context)
+
+def licenses(request, id):
+    company = Company.objects.get(id=id)    
+    context = {
+        'company': company,        
+    }
+    return render(request, 'app_struct/licenses.html', context=context)
+
+def license(request, id, id_lic):
+    company = Company.objects.get(id=id)
+    license = License.objects.get(id=id_lic)
+    context = {
+        'company': company,
+        'license': license,        
+    }
+    return render(request, 'app_struct/license.html', context=context)
+
+def facilities(request, id, id_lic):
+    company = Company.objects.get(id=id)    
+    license = License.objects.get(id=id_lic)    
+    context = {        
+        'company': company,
+        'license': license,        
+    }
+    return render(request, 'app_struct/facilities.html', context=context)
+
+def facility(request, id, id_lic, id_fc):
+    company = Company.objects.get(id=id)    
+    license = License.objects.get(id=id_lic)
+    facility = Facility.objects.get(id=id_fc)
+    context = {        
+        'company': company,
+        'license': license,
+        'facility': facility,       
+    }
+    return render(request, 'app_struct/facility.html', context=context)
+
+def subfacilities(request, id, id_lic, id_fc):
+    company = Company.objects.get(id=id)
+    license = License.objects.get(id=id_lic)
+    facility = Facility.objects.get(id=id_fc)
+    context = {
+        'company': company,
+        'license': license,
+        'facility': facility,
+    }
+    return render(request, 'app_struct/subfacilities.html', context=context)

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% load menu_tags %}
+
+{% block title %}Компании{% endblock title %}
+
+{% block main %}
+{% get_companies as companies %}
+<div class="row row-cols-3 row-cols-md-3 g-4">
+{% for company in companies %}
+    <div class="col">
+        <div class="card text-white bg-dark h-100" style="max-width: 21rem;">
+            <div class="card-header"><a class="nav-link" href="/struct/company/{{ company.id }}/">{{ company.title }}</a></div>
+            <div class="img_wrapper">
+                {% if company.logo %}
+                <img src="{{ company.logo.url }}" class="card-img-top" alt="Логотип компании">
+                {% else %}
+                <img src="{% static 'umzr/img/company.svg' %}" class="card-img-top" alt="Заглушка">
+                {% endif %}
+            </div>                        
+            <div class="card-body">
+                <h5 class="card-title">{{ company.name }}</h5>
+                <ul class="list-group bg-dark list-group-flush">
+                    <li class="list-group-item text-white bg-dark">
+                        {% if company.subcompany.count > 0 %}
+                        <a href="/struct/company/{{ company.id }}/subcompanies/" class="nav-link">Дочерние общества</a>
+                        {% else %}
+                        <span>Нет дочерних Обществ</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item text-white bg-dark">
+                        {% if company.divisions.count > 0 %}
+                        <a href="/struct/company/{{ company.id }}/divisions/" class="nav-link">Подразделения</a>
+                        {% else %}
+                        <span>Нет  подразделений</span>
+                        {% endif %}                                    
+                    </li>
+                    <li class="list-group-item text-white bg-dark">
+                        {% if company.licenses.count > 0 %}
+                        <a href="/struct/company/{{ company.id }}/licenses/" class="nav-link">Лицензии</a>
+                        {% else %}
+                        <span>Нет лицензий</span>
+                        {% endif %}                                    
+                    </li>
+                </ul>                            
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>    
+{% endblock main %}

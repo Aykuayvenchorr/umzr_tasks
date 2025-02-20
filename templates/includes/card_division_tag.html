@@ -1,0 +1,34 @@
+{% load static %}
+{% load menu_tags %}
+
+<div class="col">
+    <div class="card text-white bg-dark h-100" style="max-width: 21rem;">
+        <div class="card-header"><a class="nav-link" href="/struct/company/{{ company.id }}/division/{{ division.id }}">{{ division.abbr }}</a></div>                        
+        <div class="card-body">
+            <h5 class="card-title">{{ division.name }}</h5>
+            <ul class="list-group bg-dark list-group-flush">
+                <li class="list-group-item text-white bg-dark">
+                    {% if division.subdivisions.count > 0 %}
+                    <a href="/struct/company/{{ company.id }}/subdivisions/{{ division.id }}/" class="nav-link">Структурные подразделения</a>
+                    {% else %}
+                    <span>Нет структурных подразделений</span>
+                    {% endif %}
+                </li>
+                <!-- <li class="list-group-item text-white bg-dark">
+                    {% if subcompany.divisions.count > 0 %}
+                    <a href="/struct/company/{{ subcompany.id }}/divisions/" class="nav-link">Подразделения</a>
+                    {% else %}
+                    <span>Нет  подразделений</span>
+                    {% endif %}                                    
+                </li>
+                <li class="list-group-item text-white bg-dark">
+                    {% if subcompany.licenses.count > 0 %}
+                    <a href="/struct/company/{{ subcompany.id }}/licenses/" class="nav-link">Лицензии</a>
+                    {% else %}
+                    <span>Нет лицензий</span>
+                    {% endif %}                                    
+                </li> -->
+            </ul>                            
+        </div>
+    </div>
+</div>

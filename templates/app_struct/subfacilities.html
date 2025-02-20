@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% load menu_tags %}
+
+{% block title %}Объекты {{ license.name }}{% endblock title %}
+
+{% block main %}
+<div class="card text-white bg-dark">
+    <div class="card-header"><a class="nav-link" href="/struct/company/{{ company.id }}/division/{{ division.id }}">Краткое наименование: {{ division.abbr }}</br>Полное наименование: {{ division.name }}</a></div>
+    <div class="img_wrapper"><img src="{% static 'umzr/img/divisions.svg' %}" class="card-img-top" alt="Структурные подразделения"></div>
+    <div class="card-body"><h5 class="card-title text-white bg-dark">Объекты:</h5></div>
+</div>
+
+<div class="row row-cols-3 row-cols-md-3 g-4 mt-2">
+{% get_subfacilities facility.id as subfacilities %}
+{% for subfacility in subfacilities %}
+    {% card_facility_tag company.id license.id subfacility.id %}
+{% endfor %}
+</div>
+{% endblock main %}
