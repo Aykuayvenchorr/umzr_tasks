@@ -27,6 +27,15 @@
         <div class="menufooter">
             <img src="{% static 'umzr/img/menufooter.svg' %}" class="menufooter-img" alt="">
         </div>
-    </div> 
+    </div>
+    <script>
+        const config = {};
+        window.ClassicEditor
+            .create( document.querySelector( '#editor' ), config )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
  </body>
 </html>
+ 

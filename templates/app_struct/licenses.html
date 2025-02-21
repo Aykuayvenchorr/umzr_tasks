@@ -31,14 +31,20 @@
                     {% if license.facilities.count > 0 %}
                     <a href="/struct/company/{{ company.id }}/license/{{ license.id }}/facilities/" class="nav-link">Объекты</a>
                     {% else %}
-                    <span>Нет объектов</span>
+                    <span class="custom-color-unactive">Нет объектов</span>
                     {% endif %}
                 </li>
                 <li class="list-group-item text-white bg-dark">
                     {% if license.projects.count > 0 %}
-                    <a href="/struct/company/{{ company.id }}/license/{{ license.id }}/projects/" class="nav-link">Проекты</a>
+                    <a href="/struct/company/{{ company.id }}/license/{{ license.id }}/projects/" class="nav-link">Проекты:</a>
+                    <!-- <li class="list-group-item text-white bg-dark "> -->
+                        {% get_license_projects_actual license.id as projects %}
+                        {% for project in projects %}
+                        <a href="/struct/company/{{ company.id }}/license/{{ license.id }}/project/{{ project.id }}/" class="font-italic text-decoration-none custom-color">{{ project.name }}</a><br>
+                        {% endfor %}
+                    <!-- </li> -->
                     {% else %}
-                    <span>Нет проектов</span>
+                    <span class="custom-color-unactive">Нет проектов</span>
                     {% endif %}
                 </li>
             </ul>

@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from app_struct.models import *
 from app_struct.forms import *
+from app_econ.models import *
 
 
 
@@ -36,6 +37,13 @@ def signout(request):
 def companies(request):
     return render(request, 'app_struct/companies.html')
 
+def company(request, id):
+    company = Company.objects.get(id=id)
+    context = {
+        'company': company,
+    }
+    return render(request, 'app_struct/company.html', context=context)
+
 def subcompanies(request, id):
     company = Company.objects.get(id=id)
     subcompanies = company.subcompany.filter(actual=True).order_by('title')
@@ -51,6 +59,16 @@ def divisions(request, id):
         'company': company,        
     }
     return render(request, 'app_struct/divisions.html', context=context)
+
+def division(request, id, id_div):
+    company = Company.objects.get(id=id)   
+    division = Division.objects.get(id=id_div)
+
+    context = {
+        'company': company,  
+        'division': division,    
+    }
+    return render(request, 'app_struct/division.html', context=context)
 
 def subdivisions(request, id, id_div):
     company = Company.objects.get(id=id)
@@ -107,3 +125,23 @@ def subfacilities(request, id, id_lic, id_fc):
         'facility': facility,
     }
     return render(request, 'app_struct/subfacilities.html', context=context)
+
+def projects(request, id, id_lic):
+    company = Company.objects.get(id=id)
+    license = License.objects.get(id=id_lic)
+    context = {
+        'company': company,
+        'license': license,        
+    }
+    return render(request, 'app_struct/projects.html', context=context)
+
+def project(request, id, id_lic, id_pr):
+    company = Company.objects.get(id=id)
+    license = License.objects.get(id=id_lic)
+    project = Project.objects.get(id=id_pr)
+    context = {
+        'company': company,
+        'license': license,
+        'project': project,        
+    }
+    return render(request, 'app_struct/project.html', context=context)

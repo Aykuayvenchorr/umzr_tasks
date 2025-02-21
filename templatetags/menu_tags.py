@@ -4,6 +4,7 @@ from django.db.models import Q
 
 from app_struct.models import *
 from app_struct.forms import *
+from app_econ.models import *
 
 
 register = template.Library()
@@ -36,6 +37,14 @@ def get_facilities(license_id):
 @register.simple_tag
 def get_subfacilities(facility_id):
     return Facility.objects.get(id=facility_id).facilities.filter(actual=True).order_by('name')
+
+@register.simple_tag
+def get_license_projects_actual(license_id):
+    return Project.actual_projects.filter(licenses=license_id).order_by('name')
+
+@register.simple_tag
+def get_division_projects_actual(division_id):
+    return Project.actual_projects.filter(division=division_id).order_by('name')
 
 
 @register.inclusion_tag('includes/menu_tag.html', takes_context=True)

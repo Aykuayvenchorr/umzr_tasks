@@ -29,6 +29,9 @@ class Project(models.Model):
         ordering = ['division', 'name']
         indexes = [models.Index(fields=['division', 'name']),]
         unique_together = ('division', 'name')
+    
+    objects = models.Manager()
+    actual_projects = ProjectActualManager()
 
     def __str__(self):
         return f'{self.name} ({self.division.name} - {self.division.company.title})'

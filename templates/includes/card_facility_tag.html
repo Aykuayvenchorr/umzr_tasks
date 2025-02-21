@@ -11,7 +11,7 @@
                     {% if facility.facilities.count > 0 %}
                     <a href="/struct/company/{{ company.id }}/license/{{ license.id }}/subfacilities/{{ facility.id }}/" class="nav-link">Подобъекты</a>
                     {% else %}
-                    <span>Нет подобъектов</span>
+                    <span class="custom-color-unactive">Нет подобъектов</span>
                     {% endif %}
                 </li>
             </ul>                            

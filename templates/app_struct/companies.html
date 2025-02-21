@@ -25,21 +25,21 @@
                         {% if company.subcompany.count > 0 %}
                         <a href="/struct/company/{{ company.id }}/subcompanies/" class="nav-link">Дочерние общества</a>
                         {% else %}
-                        <span>Нет дочерних Обществ</span>
+                        <span class="custom-color-unactive">Нет дочерних Обществ</span>
                         {% endif %}
                     </li>
                     <li class="list-group-item text-white bg-dark">
                         {% if company.divisions.count > 0 %}
                         <a href="/struct/company/{{ company.id }}/divisions/" class="nav-link">Подразделения</a>
                         {% else %}
-                        <span>Нет  подразделений</span>
+                        <span class="custom-color-unactive">Нет  подразделений</span>
                         {% endif %}                                    
                     </li>
                     <li class="list-group-item text-white bg-dark">
                         {% if company.licenses.count > 0 %}
                         <a href="/struct/company/{{ company.id }}/licenses/" class="nav-link">Лицензии</a>
                         {% else %}
-                        <span>Нет лицензий</span>
+                        <span class="custom-color-unactive">Нет лицензий</span>
                         {% endif %}                                    
                     </li>
                 </ul>                            
