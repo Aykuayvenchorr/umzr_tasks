@@ -1,0 +1,11 @@
+{% load static %}
+{% load menu_tags %}
+
+
+<div class="img_wrapper">
+    {% if company.logo %}
+    <img src="{{ company.logo.url }}" class="card-img-top" alt="Логотип компании">
+    {% else %}
+    <img src="{% static 'umzr/img/company.svg' %}" class="card-img-top" alt="Заглушка">
+    {% endif %}
+</div>

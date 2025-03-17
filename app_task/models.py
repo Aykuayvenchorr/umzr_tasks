@@ -64,6 +64,7 @@ class Task(models.Model):
     def __str__(self):
         return f'{self.id} - {self.name}'
     
+    
 
 class TermPlanTask(models.Model):
     """Плановые даты задачи"""

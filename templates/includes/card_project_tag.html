@@ -1,0 +1,22 @@
+{% load static %}
+{% load menu_tags %}
+
+<div class="col">
+    <div class="card text-white bg-dark h-100" style="max-width: 21rem;">
+        <div class="card-header"><a class="nav-link" href="/econ/project/{{ project.id }}/">{{ project.name }}</a></div>                        
+        <div class="card-body">
+            <h5 class="card-title">{{ project.name }}</h5>
+            <ul class="list-group bg-dark list-group-flush">
+                <li class="list-group-item text-white bg-dark">
+                    {% if project.businessplans.count > 0 %}
+                        {% for bp in project.businessplans %}
+                        <a href="/econ/project/{{ project.id }}/bp/{{ bp.id }}" class="nav-link">{{ bp.name }}</a>
+                        {% endfor %}
+                    {% else %}
+                    <span class="custom-color-unactive">Нет бизнес-планов</span>
+                    {% endif %}
+                </li>
+            </ul>                            
+        </div>
+    </div>
+</div>

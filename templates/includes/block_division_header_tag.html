@@ -1,0 +1,11 @@
+{% load static %}
+{% load menu_tags %}
+
+
+<div class="card-header">
+    <a class="nav-link" href="/struct/company/{{ division.company.id }}/division/{{ division.id}}/">Краткое наименование: {{ division.abbr }}</br>Полное наименование: {{ division.name }}</a>
+    {% if division.parent %}
+        <a class="nav-link" href="/struct/company/{{ division.company.id }}/division/{{ division.parent.id }}/">Головное подразделение: {{ division.parent.name }}</a>            
+    {% endif %}
+    <a class="nav-link" href="/struct/company/{{ division.company.id }}/">Компания: {{ division.company.name }}</a>
+</div>

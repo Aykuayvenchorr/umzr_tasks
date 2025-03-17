@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% load menu_tags %}
+
+{% block title %}Дочерние Общества {{ company.title }}{% endblock title %}
+
+{% block main %}
+
+<div class="card text-white bg-dark">
+    {% block_company_header_tag company.id %}
+    {% block_company_logo_tag company.id %}
+    <div class="card-body">
+        <h5 class="card-title text-white bg-dark">Дочерние и зависимые Общества:</h5>
+    </div>
+</div>
+
+<div class="row row-cols-3 row-cols-md-3 g-4 mt-2">
+{% for subcompany in subcompanies %}
+    <div class="col">
+        <div class="card text-white bg-dark h-100" style="max-width: 21rem;">
+            <div class="card-header"><a class="nav-link" href="/struct/company/{{ subcompany.id }}/">{{ subcompany.title }}</a></div>
+            <div class="img_wrapper">
+                {% if subcompany.logo %}
+                <img src="{{ subcompany.logo.url }}" class="card-img-top" alt="Логотип компании">
+                {% else %}
+                <img src="{% static 'umzr/img/company.svg' %}" class="card-img-top" alt="Заглушка">
+                {% endif %}
+            </div>                        
+            <div class="card-body">
+                <h5 class="card-title">{{ subcompany.name }}</h5>
+                {% block_company_ul_tag subcompany.id %}                             
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock main %}

@@ -5,4 +5,38 @@
 {% block title %}Подразделение: {{ division.name }}{% endblock title %}
 
 {% block main %}
+<div class="card text-white bg-dark">
+    {% block_division_header_tag division.id %}
+    <div class="img_wrapper">
+        <img src="{% static 'umzr/img/divisions.svg' %}" class="card-img-top" alt="Заглушка">
+    </div>
+    <div class="card-body">
+        <div class="container mt-3">            
+            <form action="{% url 'save_div' company.id division.id %}" method="POST">
+                {% csrf_token %}
+                <div class="accordion mb-3 mt-3 text-white bg-dark" id="accordionCompany">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button text-white bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Контактные данные</button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionCompany">
+                            <textarea class="accordion-body form-control ckeditor" rows="5" id="" name="contacts">{{ division.contacts }}</textarea>
+                        </div>                        
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button text-white bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">Примечания</button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionCompany">
+                            <textarea class="accordion-body form-control ckeditor" rows="5" id="" name="note">{{ division.note }}</textarea>
+                        </div>                        
+                    </div>                    
+                </div>
+                <button type="submit" class="btn btn-success">Сохранить</button>
+            </form>
+            {% block_division_ul_tag division.id %}
+        </div>
+        <h5 class="card-title text-white bg-dark mt-3">Задачи Подразделения:</h5>
+    </div>
+</div>
 {% endblock main %}

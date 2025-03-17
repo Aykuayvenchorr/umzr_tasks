@@ -1,0 +1,27 @@
+{% load static %}
+{% load menu_tags %}
+
+
+<ul class="list-group bg-dark list-group-flush mt-3">
+    <li class="list-group-item text-white bg-dark">
+        {% if company.subcompany.count > 0 %}
+        <a href="{% url 'subcompanies' id=company.id %}" class="nav-link">Дочерние общества</a>
+        {% else %}
+        <span class="custom-color-unactive">Нет дочерних Обществ</span>
+        {% endif %}
+    </li>
+    <li class="list-group-item text-white bg-dark">
+        {% if company.divisions.count > 0 %}
+        <a href="{% url 'divisions' id=company.id %}" class="nav-link">Подразделения</a>
+        {% else %}
+        <span class="custom-color-unactive">Нет  подразделений</span>
+        {% endif %}                                    
+    </li>
+    <li class="list-group-item text-white bg-dark">
+        {% if company.licenses.count > 0 %}
+        <a href="{% url 'licenses' id=company.id %}" class="nav-link">Лицензии</a>
+        {% else %}
+        <span class="custom-color-unactive">Нет лицензий</span>
+        {% endif %}                                    
+    </li>
+</ul>

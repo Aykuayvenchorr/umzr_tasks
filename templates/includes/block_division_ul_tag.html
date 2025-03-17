@@ -1,0 +1,20 @@
+{% load static %}
+{% load menu_tags %}
+
+
+<ul class="list-group bg-dark list-group-flush mt-3">
+    <li class="list-group-item text-white bg-dark">
+        {% if division.subdivisions.count > 0 %}
+        <a href="/struct/company/{{ division.company.id }}/subdivisions/{{ division.id }}/" class="nav-link">Структурные подразделения</a>
+        {% else %}
+        <span class="custom-color-unactive">Нет  подразделений</span>
+        {% endif %}                                    
+    </li>
+    <li class="list-group-item text-white bg-dark">
+        {% if division.projects.count > 0 %}
+        <a href="/struct/company/{{ division.company.id }}/division/{{ division.id }}/projects/" class="nav-link">Проекты</a>
+        {% else %}
+        <span class="custom-color-unactive">Нет проектов</span>
+        {% endif %}                                   
+    </li>
+</ul>

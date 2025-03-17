@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% load menu_tags %}
+
+{% block title %}Проекты {{ license.name }}{% endblock title %}
+
+{% block main %}
+<div class="card text-white bg-dark">
+    {% block_division_header_tag division.id %}
+    <div class="img_wrapper">
+        <img src="{% static 'umzr/img/divisions.svg' %}" class="card-img-top" alt="Заглушка">
+    </div>
+    <div class="card-body">
+        {% block_division_ul_tag division.id %}
+        <h5 class="card-title text-white bg-dark">Проекты подразделения:</h5>
+    </div>
+</div>
+
+<div class="row row-cols-3 row-cols-md-3 g-4 mt-2">
+{% get_division_projects division.id as projects %}
+{% for project in projects %}
+    {% card_project_tag project.id %}
+{% endfor %}
+</div>
+
+{% endblock main %}

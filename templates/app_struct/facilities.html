@@ -6,7 +6,7 @@
 
 {% block main %}
 <div class="card text-white bg-dark">
-    <div class="card-header"><a class="nav-link" href="/struct/company/{{ company.id }}/license/{{ license.id }}/">Лицензионный участок: {{ license.name }}</a></div>
+    <div class="card-header"><a class="nav-link" href="{% url 'license' license.id %}">Лицензионный участок: {{ license.name }}</a></div>
     <div class="img_wrapper"><img src="{% static 'umzr/img/license.svg' %}" class="card-img-top" alt="Лицензия"></div>
     <div class="card-body">
         <h5 class="card-title text-white bg-dark">Объекты ЛУ:</h5>

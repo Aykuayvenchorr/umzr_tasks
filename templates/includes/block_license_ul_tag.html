@@ -1,0 +1,24 @@
+{% load static %}
+{% load menu_tags %}
+
+
+<ul class="list-group bg-dark list-group-flush mt-3">
+    <li class="list-group-item text-white bg-dark">
+        {% if license.facilities.count > 0 %}
+        <a href="{% url 'license_facilities' id=license.owner.id id_lic=license.id %}" class="nav-link">Объекты</a>
+        {% else %}
+        <span class="custom-color-unactive">Нет объектов</span>
+        {% endif %}
+    </li>
+    <li class="list-group-item text-white bg-dark">
+        {% if license.projects.count > 0 %}
+            <a href="{% url 'license_projects' id=license.owner.id id_lic=license.id %}" class="nav-link">Проекты:</a>
+            {% get_license_projects license.id as projects %}
+            {% for project in projects %}
+                <a href="{% url 'project' id=project.id %}" class="font-italic text-decoration-none custom-color">{{ project.name }}</a><br>
+            {% endfor %}
+        {% else %}
+            <span class="custom-color-unactive">Нет проектов</span>
+        {% endif %}
+    </li>
+</ul>

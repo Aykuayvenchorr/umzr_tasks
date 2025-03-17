@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="{% static 'umzr/css/style.css' %}">
     <script src="{% static 'bootstrap/js/popper.min.js' %}" defer></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}" defer></script>
+    <!-- <script src="{% static 'umzr/js/ckeditor.js' %}"></script> -->
+    <script src="{% static 'umzr/ckeditor/ckeditor.js' %}"></script>
+    <script src="{% static 'umzr/js/actions.js' %}" defer></script>
+
 
     <title>{% block title %}УМЗР{% endblock title %}</title>
 </head>
@@ -29,13 +33,12 @@
         </div>
     </div>
     <script>
-        const config = {};
-        window.ClassicEditor
-            .create( document.querySelector( '#editor' ), config )
-            .catch( error => {
-                console.error( error );
-            } );
+              
+        var editor = CKEDITOR.replaceAll('ckeditor',{height: 500});
+        // AjexFileManager.init({returnTo: 'ckeditor', editor: editor});
+
     </script>
  </body>
 </html>
  
+<!-- https://kisameev.ru/javascript/nastroyka-ckeditor-pod-sebya---podklyuchenie-plaginov -->

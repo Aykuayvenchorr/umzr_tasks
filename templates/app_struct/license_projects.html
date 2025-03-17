@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% load menu_tags %}
+
+{% block title %}Проекты {{ license.name }}{% endblock title %}
+
+{% block main %}
+<div class="card text-white bg-dark">
+    {% block_license_header_tag license.id %}
+    {% block_license_doc_tag license.id %}
+    <div class="card-body">
+        <h5 class="card-title text-white bg-dark">Проекты ЛУ:</h5>
+    </div>
+</div>
+
+<div class="row row-cols-3 row-cols-md-3 g-4 mt-2">
+{% get_license_projects license.id as projects %}
+{% for project in projects %}
+    {% card_project_tag project.id %}
+{% endfor %}
+</div>
+
+{% endblock main %}

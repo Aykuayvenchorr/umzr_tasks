@@ -5,8 +5,10 @@
 {% block title %}Подразделения {{ company.title }}{% endblock title %}
 
 {% block main %}
+
+<!-- Компания (у которой смотрим подразделения) -->
 <div class="card text-white bg-dark">
-    <div class="card-header"><a class="nav-link" href="/struct/company/{{ company.id }}/">Краткое наименование: {{ company.title }}</br>Полное наименование: {{ company.name }}</a></div>
+    {% block_company_header_tag company.id %}
     <div class="img_wrapper">
         {% if company.logo %}
         <img src="{{ company.logo.url }}" class="card-img-top" alt="Логотип компании">

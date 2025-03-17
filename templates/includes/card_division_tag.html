@@ -6,26 +6,7 @@
         <div class="card-header"><a class="nav-link" href="/struct/company/{{ company.id }}/division/{{ division.id }}">{{ division.abbr }}</a></div>                        
         <div class="card-body">
             <h5 class="card-title">{{ division.name }}</h5>
-            <ul class="list-group bg-dark list-group-flush">
-                <li class="list-group-item text-white bg-dark">
-                    {% if division.subdivisions.count > 0 %}
-                    <a href="/struct/company/{{ company.id }}/subdivisions/{{ division.id }}/" class="nav-link">Структурные подразделения</a>
-                    {% else %}
-                    <span class="custom-color-unactive">Нет структурных подразделений</span>
-                    {% endif %}
-                </li>
-                <li class="list-group-item text-white bg-dark">
-                    {% if division.projects.count > 0 %}
-                    <a href="/struct/company/{{ company.id }}/division/{{ division.id }}/projects/" class="nav-link">Проекты:</a>
-                        {% get_division_projects_actual division.id as projects %}
-                        {% for project in projects %}
-                        <a href="/struct/company/{{ company.id }}/division/{{ division.id }}/project/{{ project.id }}/" class="font-italic text-decoration-none custom-color">{{ project.name }}</a><br>
-                        {% endfor %}
-                    {% else %}
-                    <span class="custom-color-unactive">Нет проектов</span>
-                    {% endif %}
-                </li>
-            </ul>                            
+            {% block_division_ul_tag division.id %}                            
         </div>
     </div>
 </div>

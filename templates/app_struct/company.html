@@ -6,19 +6,12 @@
 
 {% block main %}
 
-
 <div class="card text-white bg-dark">
-    <div class="card-header"><a class="nav-link" href="/struct/company/{{ company.id }}/">Краткое наименование: {{ company.title }}</br>Полное наименование: {{ company.name }}</a></div>
-    <div class="img_wrapper">
-        {% if company.logo %}
-        <img src="{{ company.logo.url }}" class="card-img-top" alt="Логотип компании">
-        {% else %}
-        <img src="{% static 'umzr/img/company.svg' %}" class="card-img-top" alt="Заглушка">
-        {% endif %}
-    </div>
+    {% block_company_header_tag company.id %}
+    {% block_company_logo_tag company.id %}
     <div class="card-body">
         <div class="container mt-3">            
-            <form action="/your-name/" method="post">
+            <form action="{% url 'company_save' id=company.id %}" method="POST">
                 {% csrf_token %}
                 <div class="accordion mb-3 mt-3 text-white bg-dark" id="accordionCompany">
                     <div class="accordion-item">
@@ -26,7 +19,7 @@
                             <button class="accordion-button text-white bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Контактные данные</button>
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionCompany">
-                            <textarea class="accordion-body form-control django_ckeditor_5" rows="5" id="editor" name="contacts">{{ company.contacts }}</textarea>
+                            <textarea class="accordion-body form-control ckeditor" rows="5" id="" name="contacts">{{ company.contacts }}</textarea>
                         </div>                        
                     </div>
                     <div class="accordion-item">
@@ -34,16 +27,55 @@
                             <button class="accordion-button text-white bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">Примечания</button>
                         </h2>
                         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionCompany">
-                            <textarea class="form-control" rows="5" id="editor2" name="note">{{ company.note }}</textarea>
+                            <textarea class="accordion-body form-control ckeditor" rows="5" id="note" name="note">{{ company.note }}</textarea>
                         </div>                        
                     </div>                    
                 </div>
                 <button type="submit" class="btn btn-success">Сохранить</button>
             </form>            
         </div>
-        <h5 class="card-title text-white bg-dark mt-3">Задачи Общества:</h5>
+        {% block_company_ul_tag company.id %}
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active text-black panels" id="tasks-tab" aria-current="page" href="#">Задачи</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white panels" id="comments-tab" href="#">Комментарии</a>
+            </li>
+        </ul>
+
+        
+        <!-- <h5 class="card-title text-white bg-dark mt-3">Задачи Общества:</h5> -->
     </div>
 </div>
+<div id="tasks-content">
+    <!-- Здесь можно вставить задачи -->
+</div>
 
+<div id="comments-content" style="display: none;">
+    <ul class="list-group mt-3">
+        <form action="{% url 'company_save' id=company.id %}" method="POST">
+            <textarea class="accordion-body form-control ckeditor" rows="5" id="" name="comment" placeholder="Добавь комментарий"></textarea>
+            <button type="submit" class="btn btn-success">Сохранить</button>
+        </form>  
+        {% for comment in comments %}
+            {% block_comment comment.id %}
+        {% empty %}
+            <li class="list-group-item bg-dark text-white">Комментариев пока нет</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+    document.getElementById("comments-tab").addEventListener("click", function() {
+        document.getElementById("tasks-content").style.display = "none";
+        document.getElementById("comments-content").style.display = "block";
+    });
+
+    document.getElementById("tasks-tab").addEventListener("click", function() {
+        document.getElementById("comments-content").style.display = "none";
+        document.getElementById("tasks-content").style.display = "block";
+    });
+</script>
 
 {% endblock main %}

@@ -5,50 +5,24 @@
 {% block title %}Лицензии{% endblock title %}
 
 {% block main %}
+
+<!-- Компания (у которой смотрим лицензии) -->
 <div class="card text-white bg-dark">
-    <div class="card-header"><a class="nav-link" href="/struct/company/{{ company.id }}/">Краткое наименование: {{ company.title }}</br>Полное наименование: {{ company.name }}</a></div>
-    <div class="img_wrapper">
-        {% if company.logo %}
-        <img src="{{ company.logo.url }}" class="card-img-top" alt="Логотип компании">
-        {% else %}
-        <img src="{% static 'umzr/img/company.svg' %}" class="card-img-top" alt="Заглушка">
-        {% endif %}
-    </div>
+    {% block_company_header_tag company.id %}
+    {% block_company_logo_tag company.id %}
     <div class="card-body">
         <h5 class="card-title text-white bg-dark">Лицензии Общества:</h5>
     </div>
 </div>
 
+<!-- Перечисление лицензий -->
 <div class="row row-cols-3 row-cols-md-3 g-4 mt-2">
 {% get_licenses company.id as licenses %}
 {% for license in licenses %}
 <div class="col">
     <div class="card text-white bg-dark h-100" style="max-width: 21rem;">
-        <div class="card-header"><a class="nav-link" href="/struct/company/{{ company.id }}/license/{{ license.id }}/">{{ license.name }}</a></div>                        
-        <div class="card-body">
-            <ul class="list-group bg-dark list-group-flush">
-                <li class="list-group-item text-white bg-dark">
-                    {% if license.facilities.count > 0 %}
-                    <a href="/struct/company/{{ company.id }}/license/{{ license.id }}/facilities/" class="nav-link">Объекты</a>
-                    {% else %}
-                    <span class="custom-color-unactive">Нет объектов</span>
-                    {% endif %}
-                </li>
-                <li class="list-group-item text-white bg-dark">
-                    {% if license.projects.count > 0 %}
-                    <a href="/struct/company/{{ company.id }}/license/{{ license.id }}/projects/" class="nav-link">Проекты:</a>
-                    <!-- <li class="list-group-item text-white bg-dark "> -->
-                        {% get_license_projects_actual license.id as projects %}
-                        {% for project in projects %}
-                        <a href="/struct/company/{{ company.id }}/license/{{ license.id }}/project/{{ project.id }}/" class="font-italic text-decoration-none custom-color">{{ project.name }}</a><br>
-                        {% endfor %}
-                    <!-- </li> -->
-                    {% else %}
-                    <span class="custom-color-unactive">Нет проектов</span>
-                    {% endif %}
-                </li>
-            </ul>
-        </div>
+        {% block_license_header_tag license.id %}
+        <div class="card-body">{% block_license_ul_tag license.id %}</div>
     </div>
 </div>
 {% endfor %}

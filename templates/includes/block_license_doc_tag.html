@@ -1,0 +1,13 @@
+{% load static %}
+{% load menu_tags %}
+
+
+<div class="img_wrapper">
+    {% if license.doc %}
+    <a class="nav-link" aria-current="page" href="{{ license.doc.url }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Лицензия">
+        <svg class="svg-btn" xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 6s1.5-2 5-2s5 2 5 2v14s-1.5-1-5-1s-5 1-5 1V6Zm10 0s1.5-2 5-2s5 2 5 2v14s-1.5-1-5-1s-5 1-5 1V6Z"/></svg>
+    </a>
+    {% else %}
+        <img src="{% static 'umzr/img/license.svg' %}" class="card-img-top" alt="Заглушка">
+    {% endif %}
+</div>

@@ -1,0 +1,9 @@
+{% load static %}
+{% load menu_tags %}
+
+<div class="card-header">
+    <a class="nav-link" href="{% url 'company' id=company.id %}">Краткое наименование: {{ company.title }}</br>Полное наименование: {{ company.name }}</a>
+    {% if company.parent %}
+    <a class="nav-link" href="{% url 'company' id=company.parent.id %}">Головная компания: {{ company.parent.name }}</a>            
+    {% endif %}
+</div>

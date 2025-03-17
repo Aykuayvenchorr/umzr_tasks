@@ -5,4 +5,30 @@
 {% block title %}Лицензия: {{ license.name }}{% endblock title %}
 
 {% block main %}
+
+<div class="card text-white bg-dark">
+    {% block_license_header_tag license.id %}
+    {% block_license_doc_tag license.id %}
+    <div class="card-body">
+        <div class="container mt-3">            
+            <form action="{% url 'license_save' license.owner.id license.id %}" method="POST">
+                {% csrf_token %}
+                <div class="accordion mb-3 mt-3 text-white bg-dark" id="accordionCompany">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button text-white bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">Примечания</button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionCompany">
+                            <textarea class="accordion-body form-control ckeditor" rows="5" id="" name="note">{{ license.note }}</textarea>
+                        </div>                        
+                    </div>                    
+                </div>
+                <button type="submit" class="btn btn-success">Сохранить</button>
+            </form>
+            {% block_license_ul_tag license.id %}
+        </div>
+        <h5 class="card-title text-white bg-dark mt-3">Задачи Лицензии:</h5>
+    </div>
+</div>
+
 {% endblock main %}
