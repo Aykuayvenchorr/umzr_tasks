@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load menu_tags %}
+{% load app_comments_tags_inclusions %}
 
 {% block title %}Компания: {{ company.name }}{% endblock title %}
 
@@ -40,12 +41,9 @@
               <a class="nav-link active text-black panels" id="tasks-tab" aria-current="page" href="#">Задачи</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white panels" id="comments-tab" href="#">Комментарии</a>
+              <a class="nav-link text-white panels" id="comments-tab" href="#comments-content">Комментарии</a>
             </li>
         </ul>
-
-        
-        <!-- <h5 class="card-title text-white bg-dark mt-3">Задачи Общества:</h5> -->
     </div>
 </div>
 <div id="tasks-content">
@@ -54,10 +52,7 @@
 
 <div id="comments-content" style="display: none;">
     <ul class="list-group mt-3">
-        <form action="{% url 'company_save' id=company.id %}" method="POST">
-            <textarea class="accordion-body form-control ckeditor" rows="5" id="" name="comment" placeholder="Добавь комментарий"></textarea>
-            <button type="submit" class="btn btn-success">Сохранить</button>
-        </form>  
+        {% block_comment_add %}  
         {% for comment in comments %}
             {% block_comment comment.id %}
         {% empty %}
@@ -65,17 +60,5 @@
         {% endfor %}
     </ul>
 </div>
-
-<script>
-    document.getElementById("comments-tab").addEventListener("click", function() {
-        document.getElementById("tasks-content").style.display = "none";
-        document.getElementById("comments-content").style.display = "block";
-    });
-
-    document.getElementById("tasks-tab").addEventListener("click", function() {
-        document.getElementById("comments-content").style.display = "none";
-        document.getElementById("tasks-content").style.display = "block";
-    });
-</script>
 
 {% endblock main %}

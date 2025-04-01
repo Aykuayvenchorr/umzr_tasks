@@ -1,6 +1,7 @@
 from django.db import models
 
-from app_struct.models import Company
+from app_struct.models import *
+from app_comments.models import *
 
 class Contractor(models.Model):
     """Контрагент"""
@@ -43,19 +44,18 @@ class FileType(models.Model):
 
 class Document(models.Model):
     """Документ"""
-    title       = models.CharField(max_length=255)
-    number      = models.CharField(max_length=255)
-    file        = models.FileField(upload_to='tasks/', help_text="Загрузите документ")
+    title       = models.CharField(max_length=255, blank=True, null=True)
+    file        = models.FileField(upload_to='doc/', help_text="Загрузите документ")
     actual      = models.BooleanField(default=True, help_text="Актуально", verbose_name="Актуально")
     created_at  = models.DateTimeField(auto_now_add=True, help_text="Создан", verbose_name='Создан')
-    updated_at  = models.DateTimeField(auto_now=True, help_text="Обновлен", verbose_name='Обновлен')
-    note        = models.TextField(blank=True, null=True, help_text="Примечание", verbose_name="Примечание")
+    user_created = models.ForeignKey(Employee, on_delete=models.SET_NULL, blank=True, null=True, help_text="Сотрудник", verbose_name="Сотрудник")
     type        = models.ForeignKey(FileType, on_delete=models.SET_NULL, blank=True, null=True, related_name="documents", help_text="Тип файла", verbose_name="Тип файла")
+    from_send   = models.TextField(blank=True, null=True, help_text="Откуда пришел документ: company-2-comment-3", verbose_name="Откуда пришел документ")
+    # comment     = models.ForeignKey("app_comments.Comment", on_delete=models.CASCADE, blank=True, null=True, related_name="documents")  # 🔥 Добавили связь с комментарием
 
     class Meta:
         verbose_name = "Документ"
         verbose_name_plural = "Документы"
 
     def __str__(self):
-        return f'{self.title} - {self.number}'
-
+        return f'{self.title}'

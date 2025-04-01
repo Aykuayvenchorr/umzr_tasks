@@ -1,0 +1,42 @@
+{% load static %}
+{% load menu_tags %}
+
+
+<div class="card text-white bg-dark">
+    <h5 class="card-header font-weight-normal">Добавить комментарий</h5>
+    <div class="card-body">
+        <form enctype="multipart/form-data" action="{% url 'comment_save' %}" method="POST">
+            {% csrf_token %}
+            <div class="accordion mb-3 mt-3 text-white bg-dark" id="accordionComment">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="commentOne">
+                        <button class="accordion-button text-white bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#commentCollapsOne" aria-expanded="true" aria-controls="commentCollapsOne">Краткое наименование</button>
+                    </h2>
+                    <div id="commentCollapsOne" class="accordion-collapse collapse" aria-labelledby="commentOne" data-bs-parent="#accordionComment">
+                        <input class="accordion-body form-control" type="text" name="name" placeholder="Краткое наименование комментария" required/>
+                    </div>                        
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="commentTwo">
+                        <button class="accordion-button text-white bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#commentCollapsTwo" aria-expanded="true" aria-controls="commentCollapsTwo">Текст комментария</button>
+                    </h2>
+                    <div id="commentCollapsTwo" class="accordion-collapse collapse" aria-labelledby="commentTwo" data-bs-parent="#accordionComment">
+                        <textarea class="accordion-body form-control ckeditor" rows="5" id="" name="full_name" placeholder="Текст Комментария" required></textarea>
+                    </div>                        
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="commentThree">
+                        <button class="accordion-button text-white bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#commentCollapsThree" aria-expanded="true" aria-controls="commentCollapsThree">Файлы</button>
+                    </h2>
+                    <div id="commentCollapsThree" class="accordion-collapse collapse" aria-labelledby="commentThree" data-bs-parent="#accordionComment">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="files" id="commentFiles" multiple>
+                            <label class="custom-file-label" for="commentFiles">Выбрать файлы</label>
+                        </div>
+                    </div>                        
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Сохранить</button>
+        </form>
+    </div>
+</div>

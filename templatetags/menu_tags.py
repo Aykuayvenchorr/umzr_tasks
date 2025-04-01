@@ -165,12 +165,3 @@ def block_license_doc_tag(context, id):
     }
     return context
 
-@register.inclusion_tag('includes/block_comment.html', takes_context=True)
-def block_comment(context, id): 
-    comment = Comment.objects.get(id=id)
-    context = {
-        'user':             context['user'],
-        'comment':          comment,
-    }
-    return context
-

@@ -2,12 +2,15 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from app_econ.models import *
 from app_struct.models import *
+from app_comments.models import *
 
 # Create your views here.
 def project(request, id):
     project = Project.objects.get(id=id)
+    comments = Comment.objects.filter(project=project)
     context = {
         'project': project,   
+        'comments': comments,   
     }
     return render(request, 'app_econ/project.html', context=context)
 

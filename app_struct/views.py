@@ -81,8 +81,11 @@ def licenses(request, id):
 
 def license(request, id):
     license = License.objects.get(id=id)
+    comments = Comment.objects.filter(license=license)
+
     context = {
         'license': license,        
+        'comments': comments,        
     }
     return render(request, 'app_struct/license.html', context=context)
 
@@ -118,10 +121,13 @@ def facility(request, id, id_lic, id_fc):
     company = Company.objects.get(id=id)    
     license = License.objects.get(id=id_lic)
     facility = Facility.objects.get(id=id_fc)
+    comments = Comment.objects.filter(facility=facility)
+
     context = {        
         'company': company,
         'license': license,
         'facility': facility,       
+        'comments': comments,       
     }
     return render(request, 'app_struct/facility.html', context=context)
 
@@ -147,10 +153,13 @@ def divisions(request, id):
 def division(request, id, id_div):
     company = Company.objects.get(id=id)   
     division = Division.objects.get(id=id_div)
+    comments = Comment.objects.filter(division=division)
+
 
     context = {
         'company': company,  
-        'division': division,    
+        'division': division,   
+        'comments': comments 
     }
     return render(request, 'app_struct/division.html', context=context)
 
@@ -188,10 +197,13 @@ def project_div (request, id, id_div, id_pr):
     company = Company.objects.get(id=id)
     division = Division.objects.get(id=id_div)
     project = Project.objects.get(id=id_pr)
+    comments = Comment.objects.filter(project=project)
+
     context = {
         'company': company,
         'division': division,
         'project': project,   
+        'comments': comments,   
      }
     return render(request, 'app_struct/project.html', context=context)
 

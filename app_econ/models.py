@@ -112,7 +112,7 @@ class BusinessPlanStr(models.Model):
         verbose_name_plural = "Строки в бизнес плане"
 
     def __str__(self):
-        return f'{self.bp.name} \ {self.bpf.name} \ {self.costitem.name}'
+        return f'{self.bp.name} - {self.bpf.name} - {self.costitem.name}'
 
 
 class BPTask(models.Model):
@@ -144,8 +144,8 @@ class PaymentBPTask(models.Model):
     actual       = models.BooleanField(default=True, help_text="Актуально", verbose_name="Актуально")
     created_at   = models.DateTimeField(auto_now_add=True, help_text="Создан", verbose_name='Создан')
     updated_at   = models.DateTimeField(auto_now=True, help_text="Обновлен", verbose_name='Обновлен')
-    contract     = models.ForeignKey(Contract, on_delete=models.SET_NULL, related_name="bppayments", blank=True, null=True, help_text="Договор", verbose_name="Договор")
-    file         = models.ForeignKey(Document, on_delete=models.SET_NULL, blank=True, null=True, related_name="bppayments", help_text="Документ", verbose_name="Документ")
+    # contract     = models.ForeignKey(Contract, on_delete=models.SET_NULL, related_name="bppayments", blank=True, null=True, help_text="Договор", verbose_name="Договор")
+    # file         = models.ForeignKey(Document, on_delete=models.SET_NULL, blank=True, null=True, related_name="bppayments", help_text="Документ", verbose_name="Документ")
 
     class Meta:
         verbose_name = "Планируемая оплата"

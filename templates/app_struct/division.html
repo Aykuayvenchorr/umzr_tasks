@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% load menu_tags %}
+{% load app_comments_tags_inclusions %}
+
 
 {% block title %}Подразделение: {{ division.name }}{% endblock title %}
 
@@ -36,7 +38,29 @@
             </form>
             {% block_division_ul_tag division.id %}
         </div>
-        <h5 class="card-title text-white bg-dark mt-3">Задачи Подразделения:</h5>
+        <!-- <h5 class="card-title text-white bg-dark mt-3">Задачи Подразделения:</h5> -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active text-black panels" id="tasks-tab" aria-current="page" href="#">Задачи</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white panels" id="comments-tab" href="#comments-content">Комментарии</a>
+            </li>
+        </ul>
     </div>
+</div>
+<div id="tasks-content">
+    <!-- Здесь можно вставить задачи -->
+</div>
+
+<div id="comments-content" style="display: none;">
+    <ul class="list-group mt-3">
+        {% block_comment_add %}  
+        {% for comment in comments %}
+            {% block_comment comment.id %}
+        {% empty %}
+            <li class="list-group-item bg-dark text-white">Комментариев пока нет</li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock main %}
