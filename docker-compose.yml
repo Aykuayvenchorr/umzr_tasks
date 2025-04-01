@@ -9,7 +9,7 @@ services:
       - db
     volumes:
       - .:/code
-      - django_static:/code/static
+      - ./static:/code/static
     ports:
       - "8000:8000"
     environment:
@@ -34,4 +34,3 @@ services:
 
 volumes:
   db_data:
-  django_static:
