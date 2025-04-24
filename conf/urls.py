@@ -29,6 +29,7 @@ urlpatterns = [
     path("struct/", include("app_struct.urls")),
     path("econ/", include("app_econ.urls")),
     path("comments/", include("app_comments.urls")),
+    path("task/", include("app_task.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

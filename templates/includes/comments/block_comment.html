@@ -22,13 +22,13 @@
         <p>{{ comment.full_name|safe }}</p>
         <footer class="blockquote-footer">
           <cite title="Source Title" style="color: #dee2e6; font-size: 0.95rem;">{{ comment.user_created.surname }} {{ comment.user_created.name }}</cite>
-            {% if comment.actual %}
+          {% if comment.actual %}
             <form action="{% url 'comment_unchecked' comment.id %}" method="POST">
-            {% csrf_token %}
-            <input  onChange="this.form.submit()" class="form-check-input" type="checkbox" checked>
-          </form>
-            {% else %}
-            {% endif %}
+              {% csrf_token %}
+              <input  onChange="this.form.submit()" class="form-check-input" type="checkbox" checked>
+            </form>
+          {% else %}
+          {% endif %}
         </footer>
       </blockquote>
       {% if comment.documents.all %}

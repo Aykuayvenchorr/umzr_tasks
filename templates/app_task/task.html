@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% load menu_tags %}
+{% load app_comments_tags_inclusions %}
+
+{% block title %}
+    {% if newtask %}Новая задача{% else %}Редактирование задачи{% endif %}
+{% endblock title %}
+
+{% block main %}
+<div class="card text-white bg-dark">
+    <div class="card-body">
+        <h5 class="card-header font-weight-normal">Задача для {{ obj.name }}</h5>
+        <div class="container mt-3">
+
+            <form enctype="multipart/form-data" action="{% url 'task_add' type=type id=id %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name="type" value={{ type }} hidden>
+                <input type="text" name="id" value={{ id }} hidden>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="task-name">></span>
+                    <input type="text" class="form-control" name="name" placeholder="Наименование" aria-label="Наименование" aria-describedby="task-name">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">></span>
+                    <textarea class="form-control" name="desc" placeholder="Детальное описание" aria-label="Детальное описание"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">></span>
+                    <textarea class="form-control" name="note" placeholder="Примечание" aria-label="Примечание"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="employesResponsible">></label>
+                    <select class="form-select" id="employesResponsible">
+                      <option selected>Ответственный...</option>
+                      {% for emp in employes %}
+                        <option value={{ emp.id }}>{{ emp }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                <button type="submit" class="btn btn-success">Сохранить</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock main %}

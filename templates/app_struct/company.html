@@ -38,7 +38,7 @@
         {% block_company_ul_tag company.id %}
         <ul class="nav nav-tabs">
             <li class="nav-item">
-              <a class="nav-link active text-black panels" id="tasks-tab" aria-current="page" href="#">Задачи</a>
+              <a class="nav-link active text-black panels" id="tasks-tab" aria-current="page" href="#tasks-content">Задачи</a>
             </li>
             <li class="nav-item">
               <a class="nav-link text-white panels" id="comments-tab" href="#comments-content">Комментарии</a>
@@ -47,7 +47,11 @@
     </div>
 </div>
 <div id="tasks-content">
+    <ul class="list-group mt-3">
+        <a href="{% url 'task_add' type='company' id=company.id tid=-1 %}" class="btn btn-success" role="button" aria-disabled="true">Добавить задачу</a>
+    </ul>    
     <!-- Здесь можно вставить задачи -->
+    <p>Список задач</p>
 </div>
 
 <div id="comments-content" style="display: none;">
