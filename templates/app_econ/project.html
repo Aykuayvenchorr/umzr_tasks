@@ -58,7 +58,11 @@
     </div>
 </div>
 <div id="tasks-content">
+    <ul class="list-group mt-3">
+        <a href="{% url 'task_add' type='project' id=project.id tid=-1 %}" class="btn btn-success" role="button" aria-disabled="true">Добавить задачу</a>
+    </ul>    
     <!-- Здесь можно вставить задачи -->
+    <p>Список задач</p>
 </div>
 
 <div id="comments-content" style="display: none;">

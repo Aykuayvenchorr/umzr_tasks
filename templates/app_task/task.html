@@ -13,7 +13,7 @@
         <h5 class="card-header font-weight-normal">Задача для {{ obj.name }}</h5>
         <div class="container mt-3">
 
-            <form enctype="multipart/form-data" action="{% url 'task_add' type=type id=id %}" method="POST">
+            <form enctype="multipart/form-data" action="{% url 'task_add' type=type id=id tid=-1 %}" method="POST">
                 {% csrf_token %}
                 <input type="text" name="type" value={{ type }} hidden>
                 <input type="text" name="id" value={{ id }} hidden>
@@ -31,14 +31,116 @@
                 </div>
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="employesResponsible">></label>
-                    <select class="form-select" id="employesResponsible">
+                    <select class="form-select" id="employesResponsible" name="user_responsible">
                       <option selected>Ответственный...</option>
-                      {% for emp in employes %}
+                      {% for emp in employees %}
                         <option value={{ emp.id }}>{{ emp }}</option>
                       {% endfor %}
                     </select>
-                  </div>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="importance">></label>
+                    <select class="form-select" id="importance" name="importance">
+                      <option selected>Важность...</option>
+                        <option value='low'>Низкая</option>
+                        <option value='middle'>Средняя</option>
+                        <option value='high'>Высокая</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="status">></label>
+                    <select class="form-select" id="status" name="status">
+                        <option value='not' selected>Не начата</option>
+                        <option value='worked'>В работе</option>
+                        <option value='canceled'>Отмена</option>
+                        <option value='ended'>Завершена</option>
+                    </select>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="true" id="actual" name="actual" checked>
+                    <label class="form-check-label" for="actual">
+                        Актуально
+                    </label>
+                </div>
 
+                <div class="mb-3">
+                    <label for="dt_start" class="form-label">Плановая дата начала:</label>
+                    <input class="form-control bg-dark text-white" type="date" id="dt_start" name="dt_start" />
+                </div>
+                
+                <div class="mb-3">
+                    <label for="dt_end" class="form-label">Плановая дата завершения:</label>
+                    <input class="form-control bg-dark text-white" type="date" id="dt_end" name="dt_end" />
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="files" id="taskFiles" multiple>
+                        <label class="custom-file-label" for="taskFiles"></label>
+                    </div>
+                </div>  
+
+                <div class="accordion mb-3 mt-3 text-white bg-dark" id="accordionPayment">
+                    <!-- Первый аккордеон Item: Заголовок "Информация об оплате" -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="paymentHeader">
+                            <button class="accordion-button text-white bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#paymentCollapse" aria-expanded="true" aria-controls="paymentCollapse">
+                                Информация об оплате
+                            </button>
+                        </h2>
+                        <div id="paymentCollapse" class="accordion-collapse collapse" aria-labelledby="paymentHeader" data-bs-parent="#accordionPayment">
+                            <div class="accordion-body bg-dark text-white">
+                                <!-- Строки внутри аккордеона -->
+                                <div class="mb-2">
+                                    <label for="actualPaymentDate" class="form-label">Фактическая дата финансирования:</label>
+                                    <input class="form-control" type="date" id="actualPaymentDate" name="fact_fin_dt" placeholder="Выберите фактическую дату оплаты"/>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="plannedPaymentDate" class="form-label">Плановая дата финансирования:</label>
+                                    <input class="form-control" type="date" id="plannedPaymentDate" name="plan_fin_dt" placeholder="Выберите плановую дату оплаты" />
+                                </div>
+                                <div class="mb-2">
+                                    <label for="actualPaymentDate" class="form-label">Фактическая дата освоения:</label>
+                                    <input class="form-control" type="date" id="actualPaymentDate" name="fact_dev_dt" placeholder="Выберите фактическую дату оплаты"/>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="plannedPaymentDate" class="form-label">Плановая дата освоения:</label>
+                                    <input class="form-control" type="date" id="plannedPaymentDate" name="plan_dev_dt" placeholder="Выберите плановую дату оплаты"/>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="actualAmount" class="form-label">Фактическая стоимость освоения:</label>
+                                    <input class="form-control" type="number" id="actualAmount" name="fact_dev_cost" placeholder="Введите фактическую сумму"/>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="plannedAmount" class="form-label">Фактическая стоимость финансирования:</label>
+                                    <input class="form-control" type="number" id="plannedAmount" name="fact_fin_cost" placeholder="Введите плановую сумму"/>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="actualAmount" class="form-label">Плановая стоимость освоения:</label>
+                                    <input class="form-control" type="number" id="actualAmount" name="plan_dev_cost" placeholder="Введите фактическую сумму"/>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="plannedAmount" class="form-label">Плановая стоимость финансирования:</label>
+                                    <input class="form-control" type="number" id="plannedAmount" name="plan_fin_cost" placeholder="Введите плановую сумму"/>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="costInfo" class="form-label">Примечание:</label>
+                                    <textarea class="form-control" id="costInfo" name="cost_info" rows="3" placeholder="Введите примечание" ></textarea>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="nds" class="form-label">Налог НДС, %:</label>
+                                    <input class="form-control bg-dark text-white" type="number" id="nds" name="nds" placeholder="Введите сумму НДС" value="0" />
+                                </div>
+                                
+                                <div class="mb-2">
+                                    <label for="ndfl" class="form-label">Налог НДФЛ, %:</label>
+                                    <input class="form-control bg-dark text-white" type="number" id="ndfl" name="ndfl" placeholder="Введите сумму НДФЛ" value="0" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-success">Сохранить</button>
             </form>
         </div>

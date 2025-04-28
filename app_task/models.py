@@ -46,10 +46,10 @@ class Task(models.Model):
     license     = models.ForeignKey(License, on_delete=models.SET_NULL, blank=True, null=True)
     facility    = models.ForeignKey(Facility, on_delete=models.SET_NULL, blank=True, null=True)
 
-    fact_fin_dt = models.DateField(help_text="Дата оплаты", verbose_name='Дата оплаты')
-    fact_fin_cost = models.FloatField(default=0, validators=[MinValueValidator(0.00)])
-    fact_dev_dt = models.DateField(help_text="Дата освоения", verbose_name='Дата освоения')
-    fact_dev_cost = models.FloatField(default=0, validators=[MinValueValidator(0.00)])
+    fact_fin_dt = models.DateField(help_text="Дата оплаты", verbose_name='Дата оплаты', blank=True, null=True)
+    fact_fin_cost = models.FloatField(default=0, validators=[MinValueValidator(0.00)], blank=True, null=True)
+    fact_dev_dt = models.DateField(help_text="Дата освоения", verbose_name='Дата освоения', blank=True, null=True)
+    fact_dev_cost = models.FloatField(default=0, validators=[MinValueValidator(0.00)], blank=True, null=True)
     cost_info   = models.TextField(blank=True, null=True, help_text="Примечание", verbose_name="Примечание")
 
 
@@ -78,6 +78,12 @@ class PlanDateStart(models.Model):
     dt_created  = models.DateField(auto_now_add=True, help_text="Создана", verbose_name='Создана')
     actual      = models.BooleanField(default=True, help_text="Актуально", verbose_name="Актуально")
 
+    class Meta:
+        verbose_name = "Плановая дата начала задачи"
+        verbose_name_plural = "Плановые даты начала задачи"
+
+    def __str__(self):
+        return f'{self.id} - {self.task} - {self.dt_start}'
 
 class PlanDateEnd(models.Model):
     """Плановая дата завершения задачи"""
@@ -87,17 +93,28 @@ class PlanDateEnd(models.Model):
     user_created = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, blank=True, related_name='plandateend')
     dt_created  = models.DateField(auto_now_add=True, help_text="Создана", verbose_name='Создана')
     actual      = models.BooleanField(default=True, help_text="Актуально", verbose_name="Актуально")
+
+    class Meta:
+        verbose_name = "Плановая дата завершения задачи"
+        verbose_name_plural = "Плановые даты завершения задачи"
+
+    def __str__(self):
+        return f'{self.id} - {self.task} - {self.dt_end}'
     
 
 class PlanCost(models.Model):
     """"Плановая оплата"""
     task        = models.ForeignKey(Task, on_delete=models.CASCADE, blank=True, null=True, related_name='plancost')
-    plan_fin_dt = models.DateField(help_text="Плановая дата оплаты", verbose_name='Плановая дата оплаты')
-    plan_fin_cost = models.FloatField(default=0, validators=[MinValueValidator(0.00)])
-    plan_dev_dt = models.DateField(help_text="Плановая дата освоения", verbose_name='Плановая дата освоения')
-    plan_dev_cost = models.FloatField(default=0, validators=[MinValueValidator(0.00)])
-    nds_bool = models.BooleanField(default=True, help_text="НДС", verbose_name="НДС")
-    ndfl_bool = models.BooleanField(default=True, help_text="НДФЛ", verbose_name="НДФЛ")
-    nds = models.IntegerField(default=0, validators=[MinValueValidator(0.00)])
-    ndfl = models.IntegerField(default=0, validators=[MinValueValidator(0.00)])
+    plan_fin_dt = models.DateField(help_text="Плановая дата оплаты", verbose_name='Плановая дата оплаты', blank=True, null=True)
+    plan_fin_cost = models.FloatField(default=0, blank=True, null=True, validators=[MinValueValidator(0.00)])
+    plan_dev_dt = models.DateField(help_text="Плановая дата освоения", blank=True, null=True, verbose_name='Плановая дата освоения')
+    plan_dev_cost = models.FloatField(default=0, blank=True, null=True, validators=[MinValueValidator(0.00)])
+    nds = models.IntegerField(default=0, blank=True, null=True, validators=[MinValueValidator(0.00)])
+    ndfl = models.IntegerField(default=0, blank=True, null=True, validators=[MinValueValidator(0.00)])
 
+    class Meta:
+        verbose_name = "Плановая оплата"
+        verbose_name_plural = "Плановые оплаты"
+
+    def __str__(self):
+        return f'{self.id} - {self.task}'

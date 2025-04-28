@@ -1,7 +1,8 @@
-from django.urls import path
+from django.urls import path, re_path
 import app_task.views
 
 
 urlpatterns = [
-    path('add/<str:type>/<int:id>/<int:tid>/', app_task.views.task_add, name='task_add'),
+    re_path(r'^add/(?P<type>[^/]+)/(?P<id>[0-9]+)/(?P<tid>-?[0-9]+)/$', app_task.views.task_add, name='task_add'),
+    # path('add/<str:type>/<int:id>/<int:tid>/', app_task.views.task_add, name='task_add'),
 ]
