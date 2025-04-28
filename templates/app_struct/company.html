@@ -2,6 +2,7 @@
 {% load static %}
 {% load menu_tags %}
 {% load app_comments_tags_inclusions %}
+{% load app_task_tags_inclusions %}
 
 {% block title %}Компания: {{ company.name }}{% endblock title %}
 
@@ -50,8 +51,13 @@
     <ul class="list-group mt-3">
         <a href="{% url 'task_add' type='company' id=company.id tid=-1 %}" class="btn btn-success" role="button" aria-disabled="true">Добавить задачу</a>
     </ul>    
-    <!-- Здесь можно вставить задачи -->
-    <p>Список задач</p>
+    <ul class="list-group mt-3">
+        {% for task in tasks %}
+            {% block_task task.id %}
+        {% empty %}
+            <li class="list-group-item bg-dark text-white">Задач пока нет</li>
+        {% endfor %}
+    </ul>
 </div>
 
 <div id="comments-content" style="display: none;">

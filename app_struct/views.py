@@ -11,6 +11,8 @@ from app_struct.forms import *
 from app_econ.models import *
 from django.utils.html import strip_tags
 
+from app_task.models import Task
+
 
 
 # Create your views here.
@@ -44,10 +46,12 @@ def companies(request):
 def company(request, id):
     company = Company.objects.get(id=id)
     comments = Comment.objects.filter(company=company)
+    tasks = Task.objects.filter(company=company, parent__isnull=True)
 
     context = {
         'company': company,
-        'comments': comments
+        'comments': comments,
+        'tasks': tasks
     }
     return render(request, 'app_struct/company.html', context=context)
 
