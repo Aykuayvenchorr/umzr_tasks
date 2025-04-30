@@ -79,7 +79,6 @@
                         <label class="custom-file-label" for="taskFiles"></label>
                     </div>
                 </div>  
-                {% if task.plan_fin_dt or task.fact_fin_dt or task.plan_dev_dt or task.fact_dev_dt or task.plan_fin_cost or task.fact_fin_cost or task.plan_dev_cost or task.fact_dev_cost or task.cost_info or task.nds or task.ndfl %}
                 <div class="accordion mb-3 mt-3 text-white bg-dark" id="accordionPayment">
                     <!-- Первый аккордеон Item: Заголовок "Информация об оплате" -->
                     <div class="accordion-item">
@@ -141,8 +140,6 @@
                         </div>
                     </div>
                 </div>
-                {% endif %}
-
                 <button type="submit" class="btn btn-success">Сохранить</button>
             </form>
         </div>
