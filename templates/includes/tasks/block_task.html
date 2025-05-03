@@ -1,5 +1,7 @@
 {% load static %}
 {% load menu_tags %}
+{% load app_task_tags_inclusions %}
+
 
 
 {% if task.actual %}
@@ -136,4 +138,24 @@
         <p><strong>Плановая дата окончания:</strong> {{ task.plandateend.first.dt_end|date:"Y-m-d" }}</p>
       {% endif %}  
     </div>
+
+    {% if task.task_set.exists %}
+    <div class="mt-3">
+        <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#subtasks{{ task.id }}" aria-expanded="false" aria-controls="subtasks{{ task.id }}">
+            Показать подзадачи
+        </button>
+        <div class="collapse mt-3 ms-3" id="subtasks{{ task.id }}">
+          <ul class="list-group" style="padding-left: 1rem;">
+            {% for subtask in task.task_set.all %}
+                <li class="list-group-item bg-dark text-white p-2">
+                    {% block_task subtask.id type type_id %}
+                </li>
+            {% empty %}
+                <li class="list-group-item bg-dark text-white">Подзадач пока нет</li>
+            {% endfor %}
+          </ul>
+        </div>
+    </div>
+    {% endif %}
+
 </div>
