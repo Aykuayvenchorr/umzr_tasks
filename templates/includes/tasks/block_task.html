@@ -46,7 +46,12 @@
       {% endif %}
   </div>
 </h5>
-  
+<!-- Кнопка для редиректа на страницу добавления подзадачи -->
+<div class="card-body">
+  <a href="{% url 'task_add' type=type id=type_id tid=task.id %}" class="btn btn-info">
+    Добавить подзадачу
+</a>
+</div>
 
     <div class="card-body">
       <blockquote class="blockquote mt-0">

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load menu_tags %}
-{% load app_comments_tags_inclusions %}
+{% load app_task_tags_inclusions %}
 
 {% block title %}
     {% if newtask %}Новая задача{% else %}Редактирование задачи{% endif %}
@@ -11,9 +11,16 @@
 <div class="card text-white bg-dark">
     <div class="card-body">
         <h5 class="card-header font-weight-normal">Задача для {{ obj.name }}</h5>
-        <div class="container mt-3">
+        {% if not newtask %}
+        <h5 class="card-header font-weight-normal">Подзадача для {{ task.name }}</h5>
+        {% endif %}
 
-            <form enctype="multipart/form-data" action="{% url 'task_add' type=type id=id tid=-1 %}" method="POST">
+        <div class="container mt-3">
+            {% if task %}
+                <form enctype="multipart/form-data" action="{% url 'task_add' type=type id=id tid=task.id %}" method="POST">
+            {% else %}
+                <form enctype="multipart/form-data" action="{% url 'task_add' type=type id=id tid=-1 %}" method="POST">
+            {% endif %}
                 {% csrf_token %}
                 <input type="text" name="type" value={{ type }} hidden>
                 <input type="text" name="id" value={{ id }} hidden>

@@ -65,6 +65,15 @@ def task_add(request, type, id, tid):
         employee_created = Employee.objects.get(user=user_created)
         
         task = Task()
+
+        if int(tid) > -1:
+            parent = Task.objects.get(id=tid)  # Получаем задачу по id
+            task.parent = parent
+        else:
+            parent = None  # Это новая задача, не найдено существующей задачи
+    
+
+
         name = request.POST.get('name')
         desc = request.POST.get('desc')
         note = request.POST.get('note')
@@ -178,6 +187,8 @@ def task_add(request, type, id, tid):
             dt_end=dt_end,
             user_created = Employee.objects.get(user=request.user.id)
         )
+        
+        print(f"tid = {tid}, parent = {task.parent}")
 
 
 
