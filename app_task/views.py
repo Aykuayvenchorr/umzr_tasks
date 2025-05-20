@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from app_doc.models import Document
 from app_struct.models import Company, Division, License, Facility, Employee
 from app_econ.models import Project
@@ -202,3 +202,20 @@ def task_add(request, type, id, tid):
             return redirect('license', from_url_l[-3])
         if from_url_l[-4] == 'project':
             return redirect('project', from_url_l[-3])
+        
+
+def change_task_parent(request, id):
+    task = get_object_or_404(Task, id=id)
+
+    if request.method == "POST":
+        parent_id = request.POST.get("parent_id")
+        if parent_id:
+            parent = Task.objects.filter(id=parent_id).first()
+            if parent != task:  # предотвращаем зацикливание
+                task.parent = parent
+                task.save()
+        else:
+            task.parent = None  # убрать родителя
+            task.save()
+    
+    return redirect(request.META.get('HTTP_REFERER', '/'))
